@@ -21,7 +21,7 @@ def lsmount(char* path):
     """
     cdef char vol[MAXSIZE]
 
-    dir, base = os.path.split(path)
+    dir, base = os.path.split(os.path.normpath(path))
 
     try:
         pioctl(dir, VIOC_AFS_STAT_MT_PT, vol, sizeof(vol), <char *>base, len(base), 1)

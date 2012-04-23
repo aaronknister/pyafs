@@ -1,4 +1,5 @@
 import errno
+import os
 from afs import _fs
 from afs._fs import whichcell, lsmount
 

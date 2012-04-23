@@ -1,5 +1,6 @@
 from afs._util cimport *
 from afs._util import pyafs_error
+import errno as py_errno
 
 import os
 
@@ -22,5 +23,11 @@ def lsmount(char* path):
 
     dir, base = os.path.split(path)
 
-    pioctl(dir, VIOC_AFS_STAT_MT_PT, vol, sizeof(vol), <char *>base, len(base), 1)
-    return vol
+    try:
+        pioctl(dir, VIOC_AFS_STAT_MT_PT, vol, sizeof(vol), <char *>base, len(base), 1)
+        return vol
+    except OSError,e:
+        if e.errno == py_errno.EINVAL:
+            return None
+        else:
+            raise
